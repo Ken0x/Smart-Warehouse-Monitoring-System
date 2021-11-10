@@ -1,0 +1,124 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<title>Smart Warehouse Monitoring System</title>
+@model MasterRad.Models.Border
+<form method="post" asp-action="Index">
+    <div class="form-group row">
+        <div class="col-sm">
+            <label>Select Warehouse</label>
+            <select id="CC" onchange="eventHandler()" asp-for="WarehousesId" asp-items="@ViewBag.TypeDropDown" class="form-control">
+            </select>
+        </div>
+        <div class="col-sm">
+            <label>Select Sector</label>
+            <select id="sectors" asp-items="@ViewBag.DropDown" class="form-control" onchange="getDataAsync()">
+            </select>
+            <span asp-validation-for="WarehousesId" class="text-danger"></span>
+        </div>
+            <div class="col-sm">
+                <p>
+                    Min temperature: <span id="min_temperature">0</span>
+                    Max temperature: <span id="max_temperature">0</span>
+                </p>
+                <p>
+                    Min humidity: <span id="min_humidity">0</span>
+                    Max humidity: <span id="max_humidity">0</span>
+                </p>
+            </div>
+        </div>
+        <script>
+            function eventHandler() {
+                let select = document.getElementById('CC');
+                var warehouseID = select.options[select.selectedIndex].value;
+                $.ajax({
+                    url: "api/Borders/sectors?warehouseId=" + warehouseID,
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#sectors").empty();
+                        for (var i = 0; i < data.length; i++) {
+                            let sectorID = data[i].id;
+                            let sectorName = data[i].sector_name;
+                            $("#sectors").append("<option value='" + sectorID + "'>" + sectorName + "</option>");
+                        }
+                        console.log(data);
+                    },
+                    error: function () {
+                        alert("error！");
+                    }
+                });
+                getDataAsync();
+            }
+        </script>
+</form>
+<canvas id="myChart" width="1000" height="400"></canvas>
+<script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Temperature',
+                        data: [],
+                        borderColor: 'rgba(255, 11, 0, 1)',
+                        backgroundColor: 'rgba(255, 11, 0, 1)'
+                    },
+                    {
+                        label: 'Humidity',
+                        data: [],
+                        borderColor: 'rgba(41, 41, 239, 0.8)',
+                        backgroundColor: 'rgba(41, 41, 239, 0.8)'
+                    },
+                ]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Smart Warehouse Monitoring System'
+                    }
+                },
+                animationSteps: 150
+            },
+        });
+
+        const getDataAsync = async () => {
+            const getData = async () => {
+                let whSelect = document.getElementById('CC');
+                var warehouseId = whSelect.options[whSelect.selectedIndex].value;
+                let select = document.getElementById('sectors');
+                var sectorId = select.options[select.selectedIndex].value;
+                axios.get("@Url.Action("Get", "MeasurementApi")/?sectorId=" + sectorId+ "&warehouseId=" + warehouseId).then((res) => {
+                    let humidityValues = [];
+                    let temperatureValues = [];
+                    let labels = [];
+                    if (res.data.length > 0) {
+                        const { maxTemperature, minTemperature, maxHumidity, minHumidity } = res.data[0].border;
+                        document.getElementById("max_temperature").innerHTML = maxTemperature;
+                        document.getElementById("min_temperature").innerHTML = minTemperature;
+                        document.getElementById("max_humidity").innerHTML = maxHumidity;
+                        document.getElementById("min_humidity").innerHTML = minHumidity;
+                    }
+                    res.data.forEach(el => {
+                        temperatureValues.push(el.temperature);
+                        humidityValues.push(el.humidity);
+                        labels.push(el.timestamp.split("T")[1]);
+                    })
+                    myChart.data.datasets[0].data = temperatureValues;
+                    myChart.data.datasets[1].data = humidityValues;
+                    myChart.data.labels = labels;
+                    myChart.update();
+                });
+            }
+            await getData();
+        }
+        setInterval(() => {
+            getDataAsync();
+        }, 5000);
+
+</script>

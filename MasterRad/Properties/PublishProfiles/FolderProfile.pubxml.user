@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Measurements</_PublishTargetUrl>
+    <History>True|2021-09-06T15:50:37.7747174Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=DESKTOP-DEEHHO6%3bDatabase=Rad%3bUser ID=DESKTOP-DEEHHO6\user%3bTrusted_Connection=True%3bMultipleActiveResultSets=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="MasterRad.Data.ApplicationDbContext">
+      <Value>Server=DESKTOP-DEEHHO6%3bDatabase=Rad%3bUser ID=DESKTOP-DEEHHO6\user%3bTrusted_Connection=True%3bMultipleActiveResultSets=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

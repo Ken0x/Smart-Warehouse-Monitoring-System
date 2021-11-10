@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Pass</_PublishTargetUrl>
+    <History>True|2021-09-08T20:12:20.2441807Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=DESKTOP-DEEHHO6%3bDatabase=Rad%3bUser Id=sa%3bPassword=12345678%3bTrusted_Connection=False%3bMultipleActiveResultSets=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="MasterRad.Data.ApplicationDbContext">
+      <Value>Server=DESKTOP-DEEHHO6%3bDatabase=Rad%3bUser Id=sa%3bPassword=12345678%3bTrusted_Connection=False%3bMultipleActiveResultSets=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
