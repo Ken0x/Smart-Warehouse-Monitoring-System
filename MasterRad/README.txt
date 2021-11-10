@@ -1,0 +1,1 @@
+Smart warehouse control system, final paper on the application of IoT technologies for process automation in logistics. The design of the system is done with a temperature and humidity sensor and NodeMCU device for sending data, and the devices are controlled from the Arduino software environment. The figure shows the appearance of the application.
